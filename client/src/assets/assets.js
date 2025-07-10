@@ -40,6 +40,9 @@ import car_image1 from "./car_image1.png"
 import car_image2 from "./car_image2.png"
 import car_image3 from "./car_image3.png"
 import car_image4 from "./car_image4.png"
+import car_image5 from "./cclass.jpg"
+import car_image6 from "./audia7.jpg"
+import car_image7 from "./tesla.jpg"
 
 export const cityList = ['New York', 'Los Angeles', 'Houston', 'Chicago']
 
@@ -125,7 +128,7 @@ export const dummyCarData = [
         "location": "New York",
         "description": "The BMW X5 is a mid-size luxury SUV produced by BMW. The X5 made its debut in 1999 as the first SUV ever produced by BMW.",
         "isAvaliable": true,
-        "createdAt": "2025-04-16T07:26:56.215Z",
+        "createdAt": "2025-04-16T07:26:56.215Z"
     },
     {
         "_id": "67ff6b758f1b3684286a2a65",
@@ -142,12 +145,12 @@ export const dummyCarData = [
         "location": "Chicago",
         "description": "The Toyota Corolla is a mid-size luxury sedan produced by Toyota. The Corolla made its debut in 2008 as the first sedan ever produced by Toyota.",
         "isAvaliable": true,
-        "createdAt": "2025-04-16T08:33:57.993Z",
+        "createdAt": "2025-04-16T08:33:57.993Z"
     },
     {
         "_id": "67ff6b9f8f1b3684286a2a68",
         "owner": "67fe3467ed8a8fe17d0ba6e2",
-        "brand": "Jeep ",
+        "brand": "Jeep",
         "model": "Wrangler",
         "image": car_image3,
         "year": 2023,
@@ -159,7 +162,7 @@ export const dummyCarData = [
         "location": "Los Angeles",
         "description": "The Jeep Wrangler is a mid-size luxury SUV produced by Jeep. The Wrangler made its debut in 2003 as the first SUV ever produced by Jeep.",
         "isAvaliable": true,
-        "createdAt": "2025-04-16T08:34:39.592Z",
+        "createdAt": "2025-04-16T08:34:39.592Z"
     },
     {
         "_id": "68009c93a3f5fc6338ea7e34",
@@ -176,9 +179,61 @@ export const dummyCarData = [
         "location": "Houston",
         "description": "This is a mid-size luxury sedan produced by Toyota. The Corolla made its debut in 2008 as the first sedan ever produced by Toyota.",
         "isAvaliable": true,
-        "createdAt": "2025-04-17T06:15:47.318Z",
+        "createdAt": "2025-04-17T06:15:47.318Z"
+    },
+    {
+        "_id": "6800aa93a3f5fc6338ea7e35",
+        "owner": "67fe3467ed8a8fe17d0ba6e2",
+        "brand": "Mercedes",
+        "model": "C-Class",
+        "image": car_image5,
+        "year": 2019,
+        "category": "Sedan",
+        "seating_capacity": 5,
+        "fuel_type": "Petrol",
+        "transmission": "Automatic",
+        "pricePerDay": 250,
+        "location": "San Francisco",
+        "description": "The Mercedes C-Class is a compact luxury sedan that combines performance and elegance, introduced by Mercedes-Benz.",
+        "isAvaliable": true,
+        "createdAt": "2025-04-18T09:45:12.000Z"
+    },
+    {
+        "_id": "6800ab93a3f5fc6338ea7e36",
+        "owner": "67fe3467ed8a8fe17d0ba6e2",
+        "brand": "Audi",
+        "model": "Q7",
+        "image": car_image6,
+        "year": 2020,
+        "category": "SUV",
+        "seating_capacity": 7,
+        "fuel_type": "Petrol",
+        "transmission": "Automatic",
+        "pricePerDay": 320,
+        "location": "Miami",
+        "description": "The Audi Q7 is a luxury crossover SUV, combining a spacious interior with impressive performance, first introduced by Audi in 2005.",
+        "isAvaliable": true,
+        "createdAt": "2025-04-18T10:12:34.000Z"
+    },
+    {
+        "_id": "6800ac93a3f5fc6338ea7e37",
+        "owner": "67fe3467ed8a8fe17d0ba6e2",
+        "brand": "Tesla",
+        "model": "Model S",
+        "image": car_image7,
+        "year": 2024,
+        "category": "Sedan",
+        "seating_capacity": 5,
+        "fuel_type": "Electric",
+        "transmission": "Automatic",
+        "pricePerDay": 350,
+        "location": "Seattle",
+        "description": "The Tesla Model S is a fully electric luxury sedan known for its performance, technology, and long range, introduced by Tesla.",
+        "isAvaliable": true,
+        "createdAt": "2025-04-19T11:30:00.000Z"
     }
 ];
+
 
 export const dummyMyBookingsData = [
     {

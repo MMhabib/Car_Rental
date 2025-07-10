@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import Navbar from "./components/Navbar";
 import { Route, Routes, useLocation } from "react-router-dom";
@@ -5,6 +6,7 @@ import Home from "./pages/Home";
 import CarDetails from "./pages/CarDetails";
 import Cars from "./pages/Cars";
 import MyBookings from "./pages/MyBookings";
+import Footer from "./components/Footer";
 
 
 
@@ -23,6 +25,8 @@ const isOwnerPath =useLocation().pathname.startsWith('/owner')
         <Route path="/my-bookings" element={<MyBookings/>}/>
         <Route path="/car-details/:id" element={<CarDetails/>}/>
       </Routes>
+      {!isOwnerPath &&  <Footer/>}
+     
     </div>
   );
 };
