@@ -16,7 +16,11 @@ const Sidebar = () => {
     <div className="relative min-h-screen md:flex flex-col items-center pt-8 max-w-13 md:max-w-60 w-full border-r border-bordercolor text-sm">
       <div className="group relative">
         <label htmlFor="image">
-          <img className="h-9 md:h-14 w-9 md:w-14 rounded-full mx-auto" src={image ? URL.createObjectURL(image) : user?.image} alt="" />
+          <img
+            className="h-9 md:h-14 w-9 md:w-14 rounded-full mx-auto"
+            src={image ? URL.createObjectURL(image) : user?.image}
+            alt=""
+          />
           <input
             type="file"
             id="image"
@@ -30,14 +34,14 @@ const Sidebar = () => {
         </label>
       </div>
       {image && (
-        <button
-          onAbort={updateImage}
-          className="absolute top-0 right-0 flex p-2 gap-1 bg:primary/10 text-primary cursor-pointer"
-        >
-          Save
-          <img src={assets.check_icon} width={13} alt="" />
-        </button>
-      )}
+  <button
+    onClick={updateImage}
+    className="absolute top-0 right-0 flex p-2 gap-1 bg-primary/10 text-primary cursor-pointer z-10"
+  >
+    Save
+    <img src={assets.check_icon} width={13} alt="" className="rounded-2xl"/>
+  </button>
+)}
       <p className="mt-2 text-base max-md:hidden">{user?.name}</p>
       <div className="w-full">
         {ownerMenuLinks.map((link, index) => (
@@ -57,7 +61,11 @@ const Sidebar = () => {
               alt="car icon"
             />
             <span className="max-md:hidden">{link.name}</span>
-            <div className={`${link.path === location.pathname && 'ng-primary'} w-1.5 h-8 rounded-l right-0 absolute`}></div>
+            <div
+              className={`${
+                link.path === location.pathname && "ng-primary"
+              } w-1.5 h-8 rounded-l right-0 absolute`}
+            ></div>
           </NavLink>
         ))}
       </div>
