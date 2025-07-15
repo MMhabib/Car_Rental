@@ -106,7 +106,7 @@ export const ownerMenuLinks = [
 
 export const dummyUserData = {
   "_id": "6847f7cab3d8daecdb517095",
-  "name": "GreatStack",
+  "name": "Habib",
   "email": "admin@example.com",
   "role": "owner",
   "image": user_profile,
@@ -229,7 +229,7 @@ export const dummyCarData = [
         "pricePerDay": 350,
         "location": "Seattle",
         "description": "The Tesla Model S is a fully electric luxury sedan known for its performance, technology, and long range, introduced by Tesla.",
-        "isAvaliable": true,
+        "isAvaliable": false,
         "createdAt": "2025-04-19T11:30:00.000Z"
     }
 ];
@@ -276,7 +276,7 @@ export const dummyMyBookingsData = [
         "owner": "6847f7cab3d8daecdb517095",
         "pickupDate": "2025-06-11T00:00:00.000Z",
         "returnDate": "2025-06-12T00:00:00.000Z",
-        "status": "confirmed",
+        "status": "completed",
         "price": 440,
         "createdAt": "2025-06-10T09:44:25.410Z",
     }
