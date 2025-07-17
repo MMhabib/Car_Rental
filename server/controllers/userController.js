@@ -1,5 +1,5 @@
-import { jwt } from "jsonwebtoken";
-import User from "../modals/User.js"
+import jwt from 'jsonwebtoken';
+import User from "../models/User.js"
 import bcrypt from 'bcrypt'
 
 // 

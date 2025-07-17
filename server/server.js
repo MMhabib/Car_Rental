@@ -7,6 +7,7 @@ import cors from 'cors';
 
 import connectDB from './configs/db.js';
 import userRouter from './routes/userRoutes.js';
+import ownerRouter from './routes/ownerRoutes.js';
 
 
 const PORT = process.env.PORT || 5000;
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
   res.send('server is on');
 });
 app.use('/api/user',userRouter)
+app.use('/api/owner',ownerRouter)
 
 
 
