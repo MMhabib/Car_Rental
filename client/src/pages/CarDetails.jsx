@@ -3,20 +3,35 @@ import { useNavigate, useParams } from "react-router-dom";
 import { assets} from "../assets/assets";
 import Loading from "../components/Loading";
 import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const CarDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [car, setCar] = useState(null);
-const {cars} =useAppContext()
+const {cars,axios,pickupDate,setPickupDate,returnDate,setReturnDate} =useAppContext()
 const handleSubmit=async (e)=>{
-e.preventDeafult();
+e.preventDefault();
+try {
+ const {data} =await axios.post('/api/bookings/create',{
+    car:id ,pickupDate,returnDate
+  })
+  if(data.success){
+    toast.success(data.message)
+    navigate('/my-bookings')
+  }
+  else{
+    toast.error(data.message)
+  }
+} catch (error) {
+  toast.error(error.message)
+}
 }
 
 
   useEffect(() => {
     setCar(cars.find((car) => car._id === id));
-  }, [id]);
+  }, [cars,id]);
 
   return car ? (
     <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-16">
@@ -105,6 +120,8 @@ e.preventDeafult();
           <div className="flex flex-col gap-2">
             <label htmlFor="pickup-date">Pickup Date</label>
             <input
+            value={pickupDate}
+            onChange={e=>setPickupDate(e.target.value)}
               type="date"
               id="pickup-date"
               required
@@ -115,6 +132,8 @@ e.preventDeafult();
           <div className="flex flex-col gap-2">
             <label htmlFor="return-date">Return Date </label>
             <input
+            value={returnDate}
+            onChange={e=>setReturnDate(e.target.value)}
               type="date"
               id="return-date"
               required
@@ -122,7 +141,7 @@ e.preventDeafult();
               
             />
           </div>
-          <button type="button" class="w-full py-3 active:scale-95 transition-all text-sm text-white rounded-lg bg-primary hover:bg-primary-dull cursor-pointer"><p class="mb-0.5">Book Now</p></button>
+          <button type="submit" class="w-full py-3 active:scale-95 transition-all text-sm text-white rounded-lg bg-primary hover:bg-primary-dull cursor-pointer"><p class="mb-0.5">Book Now</p></button>
           <p className=" text-center text-gray-500 font-normal">No credit card required to reserve</p>
         </form>
       </div>

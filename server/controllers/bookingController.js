@@ -1,20 +1,26 @@
 import Booking from "../models/Booking.js";
 import Car from "../models/Car.js";
 
-// Check availability of a car for given dates
+// Helper: Check if car is available during requested dates
 const checkAvailability = async (car, pickupDate, returnDate) => {
-  const booking = await Booking.find({
+  const bookings = await Booking.find({
     car,
-    pickupDate: { $lte: pickupDate },
-    returnDate: { $gte: returnDate }
+    $or: [
+      {
+        pickupDate: { $lte: returnDate },
+        returnDate: { $gte: pickupDate },
+      },
+    ],
   });
-  return booking.length === 0;
+
+  return bookings.length === 0;
 };
 
-// API to check cars available for given location and dates
+// [1] API: Check cars available for location & date range
 export const checkAvailabilityOfCar = async (req, res) => {
   try {
     const { location, pickupDate, returnDate } = req.body;
+
     const cars = await Car.find({ location, isAvailable: true });
 
     const availableCarsPromises = cars.map(async (car) => {
@@ -23,16 +29,16 @@ export const checkAvailabilityOfCar = async (req, res) => {
     });
 
     let availableCars = await Promise.all(availableCarsPromises);
-    availableCars = availableCars.filter(car => car.isAvailable === true);
+    availableCars = availableCars.filter(car => car.isAvailable);
 
     res.json({ success: true, availableCars });
   } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
+    console.log(error);
+    res.json({ success: false, message: error?.message || 'Something went wrong' });
   }
 };
 
-// API to create a booking
+// [2] API: Create a booking
 export const createBooking = async (req, res) => {
   try {
     const { _id } = req.user;
@@ -40,7 +46,7 @@ export const createBooking = async (req, res) => {
 
     const isAvailable = await checkAvailability(car, pickupDate, returnDate);
     if (!isAvailable) {
-      return res.json({ success: false, message: 'Car is not available' });
+      return res.json({ success: false, message: 'Car is not available for selected dates' });
     }
 
     const carData = await Car.findById(car);
@@ -50,63 +56,80 @@ export const createBooking = async (req, res) => {
     const noOfDays = Math.ceil((returned - picked) / (1000 * 60 * 60 * 24));
     const price = carData.pricePerDay * noOfDays;
 
-    await Booking.create({ car, owner: carData.owner, user: _id, pickupDate, returnDate, price });
-    res.json({ success: true, message: 'Booking created' });
+    await Booking.create({
+      car,
+      owner: carData.owner,
+      user: _id,
+      pickupDate,
+      returnDate,
+      price,
+    });
+
+    res.json({ success: true, message: 'Booking created successfully' });
   } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
+    console.log(error);
+    res.json({ success: false, message: error?.message || 'Failed to create booking' });
   }
 };
 
-// API to list user bookings
+// [3] API: Get bookings for logged-in user
 export const getUserBookings = async (req, res) => {
   try {
     const { _id } = req.user;
-    const bookings = (await Booking.find({ user: _id }).populate('car')).sort({ createdAt: -1 });
+
+    const bookings = await Booking.find({ user: _id })
+      .populate('car')
+      .sort({ createdAt: -1 })
+      .lean();
+
     res.json({ success: true, bookings });
   } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
+    console.log(error);
+    res.json({ success: false, message: error?.message || 'Failed to get user bookings' });
   }
 };
 
-// API to get owner bookings
+// [4] API: Get bookings for owner
 export const getOwnerBookings = async (req, res) => {
   try {
     if (req.user.role !== 'owner') {
-      return res.json({ success: false, message: 'Unauthorized' });
+      return res.json({ success: false, message: 'Unauthorized access' });
     }
 
     const bookings = await Booking.find({ owner: req.user._id })
       .populate('car user')
       .select('-user.password')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
 
     res.json({ success: true, bookings });
   } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
+    console.log(error);
+    res.json({ success: false, message: error?.message || 'Failed to get owner bookings' });
   }
 };
 
-// API to change booking status
+// [5] API: Change booking status
 export const changeBookingStatus = async (req, res) => {
   try {
     const { _id } = req.user;
     const { bookingId, status } = req.body;
 
     const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.json({ success: false, message: 'Booking not found' });
+    }
 
-    if (booking.owner.toString() !== _id.toString()) {
+    if (!booking.owner.equals(_id)) {
       return res.json({ success: false, message: 'Unauthorized' });
     }
 
     booking.status = status;
     await booking.save();
 
-    res.json({ success: true });
+    res.json({ success: true, message: 'Booking status updated' });
   } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
+    console.log(error);
+    res.json({ success: false, message: error?.message || 'Failed to update status' });
   }
 };
