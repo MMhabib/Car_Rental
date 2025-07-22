@@ -1,8 +1,12 @@
 import { useState } from "react";
 import OwnerTitle from "../../components/owner/OwnerTitle";
 import { assets } from "../../assets/assets";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const AddCar = () => {
+
+  const {axios} = useAppContext();
   const [image, setImage] = useState(null);
   const [car, setCar] = useState({
     brand: "",
@@ -13,12 +17,45 @@ const AddCar = () => {
     transmission: "",
     fuel_type: "",
     seating_capacity: 0,
-    locatiion: "",
+    location: "",
     description: "",
   });
-
+const [isLoading,setIsLoading]=useState(false)
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+if(isLoading) return null
+setIsLoading(true)
+try {
+  const formData= new FormData()
+  formData.append('image', image)
+  formData.append('carData', JSON.stringify(car))
+
+  const {data} =await axios.post('/api/owner/add-car', formData)
+if(data.success){
+  toast.success(data.message)
+  setImage(null)
+  setCar({
+ brand: "",
+    model: "",
+    year: 0,
+    pricePerDay: 0,
+    category: "",
+    transmission: "",
+    fuel_type: "",
+    seating_capacity: 0,
+    location: "",
+    description: "",
+
+  })
+}
+else{
+  toast.error(data.message)
+}
+} catch (error) {
+  toast.error(error.message)
+}finally{
+  setIsLoading(false)
+}
   };
 
   return (
@@ -144,7 +181,7 @@ const AddCar = () => {
         {/* car location */}
         <div className="flex flex-col w-full">
             <label>Location</label>
-            <select className="px-3 py-2 mt-1 border border-bordercolor rounded-md outline-none" value={car.fuel_type} onChange={e=>setCar({...car,fuel_type:e.target.value})}>
+            <select className="px-3 py-2 mt-1 border border-bordercolor rounded-md outline-none" value={car.location} onChange={(e)=>{setCar({...car,location:e.target.value}) }}>
 
               <option value="">Select a Location</option>
               <option value="New York">New York</option>
@@ -161,7 +198,7 @@ const AddCar = () => {
                 <textarea value={car.description} onChange={e=>setCar({...car, description:e.target.value})} rows={5} className="w-full mt-2 p-2 h-40 border border-gray-500/30 rounded resize-none outline-none focus:border-indigo-300" required></textarea>
             </div>
         
-            <button type="submit" className="mt-5 bg-primary text-white h-12 w-42 px-4 rounded active:scale-95 transition">List your car</button>
+            <button type="submit" className="mt-5 bg-primary text-white h-12 w-42 px-4 rounded active:scale-95 transition">{ isLoading? 'Listing....' : 'List your car'}</button>
       </form>
     </div>
   );

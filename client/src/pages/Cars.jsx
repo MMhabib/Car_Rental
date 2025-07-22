@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { assets, dummyCarData } from "../assets/assets";
+import { assets } from "../assets/assets";
 import Title from "../components/Title";
 import CarCard from "../components/CarCard";
+import { useAppContext } from "../context/AppContext";
 
 const Cars = () => {
   const [input, setInput] = useState("");
+  const {cars}= useAppContext()
 
   return (
     <div>
@@ -19,7 +21,7 @@ const Cars = () => {
           <img src={assets.search_icon} alt="" className="w-4.5 h-4.5 mr-2" />
 
           <input
-            onClick={(e) => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
             value={input}
             type="text"
             placeholder="Search by make, model, or features"
@@ -29,10 +31,10 @@ const Cars = () => {
         </div>
       </div>
       <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-10">
-<p className="text-gray-500 xl:px-20 max-w-7xl mx-auto">Showing {dummyCarData.length} Cars</p>
+<p className="text-gray-500 xl:px-20 max-w-7xl mx-auto">Showing {cars.length} Cars</p>
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
 {
-    dummyCarData.map((car,index)=><CarCard key={index}  car={car}/>)
+    cars.map((car)=><CarCard key={car._id}  car={car}/>)
 }
 </div>
       </div>

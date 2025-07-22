@@ -1,14 +1,37 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
-const Login = ({ setShowLogin }) => {
+const Login = () => {
+  const { setShowLogin, axios, setToken, navigate } = useAppContext();
+  const [isLogin, setIsLogin] = useState(true);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const url = isLogin ? "/api/user/login" : "/api/user/register";
+      const response = await axios.post(url, data);
+      const result = response.data;
+console.log(result)
+      if (result.success) {
+        setToken(result.token);
+        localStorage.setItem("token", result.token);
+        toast.success(isLogin ? "Login successful" : "Registration successful");
+        setShowLogin(false);
+        navigate("/"); // adjust if needed
+      } else {
+        toast.error(result.message || "Operation failed");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "An error occurred");
+    }
   };
 
   return (
@@ -21,14 +44,34 @@ const Login = ({ setShowLogin }) => {
         onClick={(e) => e.stopPropagation()}
         className="max-w-96 w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white"
       >
-        <h1 className="text-gray-900 text-3xl mt-10 font-medium">Login</h1>
-        <p className="text-gray-500 text-sm mt-2">Please sign in to continue</p>
+        <h1 className="text-gray-900 text-3xl mt-10 font-medium">
+          {isLogin ? "Login" : "Sign Up"}
+        </h1>
+        <p className="text-gray-500 text-sm mt-2">
+          {isLogin ? "Please sign in to continue" : "Create your account"}
+        </p>
+
+        {/* Name (only for Sign Up) */}
+        {!isLogin && (
+          <div className="flex items-center w-full mt-6 bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
+            <input
+              type="text"
+              placeholder="Name"
+              {...register("name", {
+                required: !isLogin && "Name is required",
+              })}
+              className="bg-transparent text-gray-500 placeholder-gray-500 outline-none text-sm w-full h-full"
+            />
+          </div>
+        )}
+        {!isLogin && errors.name && (
+          <p className="text-red-500 text-xs text-left mt-1">
+            {errors.name.message}
+          </p>
+        )}
 
         {/* Email */}
-        <div className="flex items-center w-full mt-10 bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
-          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fillRule="evenodd" clipRule="evenodd" d="M0 .55.571 0H15.43l.57.55v9.9l-.571.55H.57L0 10.45zm1.143 1.138V9.9h13.714V1.69l-6.503 4.8h-.697zM13.749 1.1H2.25L8 5.356z" fill="#6B7280"/>
-          </svg>
+        <div className="flex items-center w-full mt-4 bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
           <input
             type="email"
             placeholder="Email"
@@ -43,49 +86,60 @@ const Login = ({ setShowLogin }) => {
           />
         </div>
         {errors.email && (
-          <p className="text-red-500 text-xs text-left mt-1">{errors.email.message}</p>
+          <p className="text-red-500 text-xs text-left mt-1">
+            {errors.email.message}
+          </p>
         )}
 
         {/* Password */}
         <div className="flex items-center mt-4 w-full bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
-          <svg width="13" height="17" viewBox="0 0 13 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13 8.5c0-.938-.729-1.7-1.625-1.7h-.812V4.25C10.563 1.907 8.74 0 6.5 0S2.438 1.907 2.438 4.25V6.8h-.813C.729 6.8 0 7.562 0 8.5v6.8c0 .938.729 1.7 1.625 1.7h9.75c.896 0 1.625-.762 1.625-1.7zM4.063 4.25c0-1.406 1.093-2.55 2.437-2.55s2.438 1.144 2.438 2.55V6.8H4.061z" fill="#6B7280"/>
-          </svg>
           <input
             type="password"
             placeholder="Password"
             {...register("password", {
               required: "Password is required",
               pattern: {
-                value: /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*!?]).{8,}/,
-                message: "Password must have upper, lower, number, special char, min 8 chars",
+                value:
+                  /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*!?]).{8,}/,
+                message:
+                  "Password must have upper, lower, number, special char, min 8 chars",
               },
             })}
             className="bg-transparent text-gray-500 placeholder-gray-500 outline-none text-sm w-full h-full"
           />
         </div>
         {errors.password && (
-          <p className="text-red-500 text-xs text-left mt-1">{errors.password.message}</p>
+          <p className="text-red-500 text-xs text-left mt-1">
+            {errors.password.message}
+          </p>
         )}
 
-        <div className="mt-5 text-left text-indigo-500">
-          <a className="text-sm" href="#">
-            Forgot password?
-          </a>
-        </div>
+        {isLogin && (
+          <div className="mt-5 text-left text-indigo-500">
+            <a className="text-sm" href="#">
+              Forgot password?
+            </a>
+          </div>
+        )}
 
         <button
           type="submit"
-          className="mt-2 w-full h-11 rounded-full text-white bg-indigo-500 hover:opacity-90 transition-opacity"
+          className="mt-4 w-full h-11 rounded-full text-white bg-indigo-500 hover:opacity-90 transition-opacity"
         >
-          Login
+          {isLogin ? "Login" : "Sign Up"}
         </button>
 
         <p className="text-gray-500 text-sm mt-3 mb-11">
-          Don’t have an account?{" "}
-          <a className="text-indigo-500" href="#">
-            Sign up
-          </a>
+          {isLogin
+            ? "Don’t have an account?"
+            : "Already have an account?"}{" "}
+          <button
+            type="button"
+            onClick={() => setIsLogin(!isLogin)}
+            className="text-indigo-500"
+          >
+            {isLogin ? "Sign up" : "Login"}
+          </button>
         </p>
       </form>
     </div>

@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { assets, dummyCarData } from "../assets/assets";
+import { assets} from "../assets/assets";
 import Loading from "../components/Loading";
+import { useAppContext } from "../context/AppContext";
 
 const CarDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [car, setCar] = useState(null);
-
+const {cars} =useAppContext()
 const handleSubmit=async (e)=>{
 e.preventDeafult();
 }
 
 
   useEffect(() => {
-    setCar(dummyCarData.find((car) => car._id === id));
+    setCar(cars.find((car) => car._id === id));
   }, [id]);
 
   return car ? (
