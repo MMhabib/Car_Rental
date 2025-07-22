@@ -2,7 +2,8 @@ import ImageKit from "imagekit";
 
 // or
 
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 var imagekit = new ImageKit({
     publicKey : process.env.IMAGEKIT_PUBLIC_KEY,

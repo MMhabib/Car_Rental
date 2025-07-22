@@ -9,9 +9,8 @@ const clientOptions = {
 const connectDB = async () => {
   try {
   
-    const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@react-project.3kp3z2m.mongodb.net/?retryWrites=true&w=majority&appName=React-project`;
-
-    await mongoose.connect(uri, clientOptions);
+    
+    await mongoose.connect(`${process.env.MONGODB_URI}/car-rental`);
     
     console.log('✅ Pinged your deployment. You successfully connected to MongoDB!');
   } catch (err) {

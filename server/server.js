@@ -8,6 +8,8 @@ import cors from 'cors';
 import connectDB from './configs/db.js';
 import userRouter from './routes/userRoutes.js';
 import ownerRouter from './routes/ownerRoutes.js';
+import bookingRouter from './routes/bookingRoutes.js';
+import Car from './models/Car.js';
 
 
 const PORT = process.env.PORT || 5000;
@@ -23,6 +25,8 @@ app.get('/', (req, res) => {
 });
 app.use('/api/user',userRouter)
 app.use('/api/owner',ownerRouter)
+app.use('/api/bookings',bookingRouter)
+
 
 
 
