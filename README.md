@@ -4,6 +4,10 @@ A full-stack car rental application featuring a **React/Vite frontend** and an *
 
 ---
 
+## 🖼️ App Preview
+
+![Car Rental App Screenshot](https://i.ibb.co/C3mt84G1/carrenteal.jpg)
+
 ## 🔗 Live Demo
 
 - **Frontend (Vercel)**: [https://car-rental-client-umber.vercel.app/](https://car-rental-client-umber.vercel.app/)
