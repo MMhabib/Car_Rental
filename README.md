@@ -1,14 +1,61 @@
-# 🚀 Working on the Server
+# 🚗 Car Rental App
 
-All the frontend work has been completed successfully. The application features a clean, responsive design developed with React.js and styled using Tailwind CSS. Key frontend features include:
-
-- Modular and reusable React components for maintainability
-- Responsive layout supporting multiple device sizes
-- Integration with ImageKit for optimized image handling
-- Smooth user experience with dynamic rendering and state management
-
-You can check the client-side of the application—it works perfectly fine without the server as I have included dummy data for demonstration purposes.
+A full-stack car rental application featuring a **React/Vite frontend** and an **Express/MongoDB backend**, allowing users to browse, book, and manage rental cars.
 
 ---
 
-**Note:** Backend server integration is currently in progress.
+
+## 🔗 Live Demo
+
+- **Frontend (Vercel)**: [https://car-rental-client-umber.vercel.app/](https://car-rental-client-umber.vercel.app/)
+- **Backend (Render)**: [https://car-rental-9ib6.onrender.com](https://car-rental-9ib6.onrender.com)
+
+---
+
+## 🚀 Features
+
+### 👤 Authentication
+- User registration & login
+- JWT-based authentication
+- Role-based access (admin/user)
+
+### 🚘 Car Management
+- Browse all cars
+- Filter by category/location
+- Admin: Add, edit, delete cars
+
+### 📅 Booking System
+- Book cars with pickup/return dates
+- View user bookings
+- Admin can manage all bookings
+
+---
+
+## ⚙️ Technologies Used
+
+### Frontend
+- React + Vite
+- Axios
+- Tailwind CSS / Custom CSS
+- React Router
+
+### Backend
+- Node.js + Express
+- MongoDB + Mongoose
+- JWT Authentication
+- CORS & dotenv
+
+### Deployment
+- Frontend: Vercel
+- Backend: Render
+
+---
+
+## 🛠️ Getting Started Locally
+
+### 1. Clone the Repo
+
+```bash
+git clone https://github.com/MMhabib/Car_Rental.git
+cd Car_Rental
+
