@@ -4,8 +4,6 @@ A full-stack car rental application featuring a **React/Vite frontend** and an *
 
 ---
 
-## 🖼️ App Preview
-![App Preview](https://i.ibb.co/C3mt84G1/carrenteal.jpg)
 
 ## 🔗 Live Demo
 
